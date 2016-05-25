@@ -10,6 +10,7 @@
 
 namespace SciKit {
     class PowerMonitor : public AgilentOscope {
+
     public:
         PowerMonitor () = delete;
         PowerMonitor (const std::string & deviceInstanceName, const std::string & devType);
@@ -21,8 +22,12 @@ namespace SciKit {
         virtual bool loadConfig (Json::Value & config);
         virtual State getState ();
 
+
     protected:
         void getWaves (const std::string & fwdChan, const std::string & refChan,
+                       std::vector<double> & fwd, std::vector<double> & ref,
+                       double & xincr);
+        void getWavesDummy (const std::string & fwdChan, const std::string & refChan,
                        std::vector<double> & fwd, std::vector<double> & ref,
                        double & xincr);
         bool handleGetPowerPoint (Request & req, Response & resp);
@@ -36,6 +41,14 @@ namespace SciKit {
         }
 
     private:
+        float m_baseFreq;
+        Json::Value m_sMatrix;
+        Json::Value m_att1;
+        Json::Value m_att2;
+        Json::Value m_cab1;
+        Json::Value m_cab2;
+        Json::Value m_portAssignment;
+        bool m_fake;
     };
 }
 
